@@ -45,6 +45,7 @@ import com.baidu.hugegraph.traversal.algorithm.HugeTraverser;
 import com.baidu.hugegraph.traversal.optimize.TraversalUtil;
 import com.baidu.hugegraph.util.JsonUtil;
 import com.google.common.collect.ImmutableList;
+import com.baidu.hugegraph.traversal.algorithm.ShantouPathsTraverser;
 import com.google.common.collect.ImmutableMap;
 
 public class JsonSerializer implements Serializer {
@@ -241,6 +242,19 @@ public class JsonSerializer implements Serializer {
                                   "paths", pathList,
                                   "vertices", iterator);
         return JsonUtil.toJson(results);
+    }
+
+    @Override
+    public String writeShantoupaths(List<ShantouPathsTraverser.Path> paths,
+                                    Map<Id, Vertex> vertices) {
+        List<Map<String, Object>> pathList;
+        pathList = new ArrayList<>();
+        for (ShantouPathsTraverser.Path path : paths) {
+            pathList.add(path.toMap());
+        }
+        Map<String, Object> results = ImmutableMap.of("paths", pathList,
+                                                      "vertices", vertices);
+        return writeObject(results);
     }
 
     @Override
